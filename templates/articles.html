@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Məqalələr
+{% endblock title %}
+
+{% block body %}
+
+
+<div class = "row">
+    <div class = "col-md-10 offset-md-3">
+      <div class="col-lg-8">
+        <h3>Məqalələr</h3>
+        <hr>
+      </div>
+      
+    </div>
+
+</div>
+<div class = "row">
+  <div class = "col-md-10 offset-md-3">
+      <div class="col-lg-8">
+          <form>
+              {% csrf_token %}
+              <input type="text" name="keyword" class="input-sm" maxlength="64" placeholder="Axtar...">
+              <button type="submit" class="btn btn-danger">Axtar</button>
+              <hr>
+          </form>
+      </div>
+  </div>
+</div>
+{% if articles %}
+
+{% for article in articles  %}
+    <div class="row">
+      <div class = "col-md-10 offset-md-3">  
+      <!-- Post Content Column -->
+      <div class="col-lg-8">
+
+        <!-- Title -->
+        <a style="text-decoration:none" href="{% url 'article:detail' article.id %}"><h3 class="mt-4">{{article.title}}</h3></a>
+        
+ 
+        <!-- Author -->
+        <p class="lead">
+          {{article.author.username}} tərəfindən yazıldı
+        </p>
+ 
+        <hr>
+ 
+        <!-- Date/Time -->
+        <p>
+            {{article.created_at}}
+        </p>
+ 
+        <hr>
+ 
+        <!-- Preview Image -->
+        {% if article.article_image %}
+        <img class="img-fluid rounded" src="{{article.article_image.url}}" alt="">
+        
+        {% endif %}
+        
+ 
+        <hr>
+ 
+        <!-- Post Content -->
+        <p class="lead">
+            {{article.content | safe | truncatewords:50}}
+        </p>
+        <a style="text-decoration:none;float : right" href="{% url 'article:detail' article.id %}">Ardı</a>
+        <hr>
+        </div>
+ 
+      </div>
+ 
+    </div>
+    <!-- /.row -->
+{% endfor %}
+
+{% else %}
+
+
+<div class = "row">
+  <div class = "col-md-10 offset-md-3">
+      <div class="col-lg-8">
+        <div class = "alert alert-danger">
+          Belə bir məqalə yoxdur.
+        </div>
+      </div>
+  </div>
+</div>
+
+{% endif %}
+
+
+
+{% endblock body %}
